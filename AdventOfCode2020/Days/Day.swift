@@ -1,6 +1,11 @@
 import Foundation
 import QuartzCore
 
+enum Result {
+    case success
+    case fail
+}
+
 protocol Day {
     static func run(input: String)
 }
@@ -34,5 +39,14 @@ extension Day {
 
     static func splitInput(_ input: String, separator: Character = "\n") -> [String] {
         input.split(separator: separator).map(String.init)
+    }
+
+    static func printResult(result: Result = .success, dayPart: Int, message: String) {
+        switch result {
+        case .success:
+            print("✅ Part \(dayPart): \(message)")
+        case .fail:
+            print("⚠️ Part \(dayPart): \(message)")
+        }
     }
 }

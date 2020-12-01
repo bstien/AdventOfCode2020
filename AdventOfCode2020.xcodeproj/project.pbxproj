@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		79AF59F12576A14A0036E898 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AF59F02576A14A0036E898 /* main.swift */; };
+		8D6803D2DE39AB131F8F95DB /* Day1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D680A1F6C0C9DD9487393AA /* Day1.swift */; };
 		8D6806403A447AED3A5727D9 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D68076F1AC426766968FA2F /* Day.swift */; };
 		8D680DA27D14587D2EBA98CE /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D680BF42ECCDD6E8BB4F4F9 /* Input.swift */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,8 @@
 		79AF59ED2576A14A0036E898 /* AdventOfCode2020 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2020; sourceTree = BUILT_PRODUCTS_DIR; };
 		79AF59F02576A14A0036E898 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8D68076F1AC426766968FA2F /* Day.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		8D6808F0189908103D03F27B /* Day1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1.txt; sourceTree = "<group>"; };
+		8D680A1F6C0C9DD9487393AA /* Day1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day1.swift; sourceTree = "<group>"; };
 		8D680BF42ECCDD6E8BB4F4F9 /* Input.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				8D680BF42ECCDD6E8BB4F4F9 /* Input.swift */,
+				8D6808F0189908103D03F27B /* Day1.txt */,
 			);
 			path = Inputs;
 			sourceTree = "<group>";
@@ -80,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				8D68076F1AC426766968FA2F /* Day.swift */,
+				8D680A1F6C0C9DD9487393AA /* Day1.swift */,
 			);
 			path = Days;
 			sourceTree = "<group>";
@@ -144,6 +149,7 @@
 				79AF59F12576A14A0036E898 /* main.swift in Sources */,
 				8D680DA27D14587D2EBA98CE /* Input.swift in Sources */,
 				8D6806403A447AED3A5727D9 /* Day.swift in Sources */,
+				8D6803D2DE39AB131F8F95DB /* Day1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
