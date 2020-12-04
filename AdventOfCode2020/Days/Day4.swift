@@ -1,14 +1,16 @@
 import Foundation
 
+typealias Passport = [String: String]
+
 struct Day4: Day {
     static func run(input: String) {
         let lines = splitInput(input, omittingEmptySubsequences: false)
-        let credentials = readCredentials(from: lines)
+        let passports = readPassports(from: lines)
 
-        part1(credentials: credentials)
+        part1(passports: passports)
     }
 
-    static func part1(credentials: [[String]]) {
+    static func part1(passports: [Passport]) {
         let requiredFields = [
             "byr",
             "iyr",
@@ -19,15 +21,16 @@ struct Day4: Day {
             "pid"
         ]
 
-        let validPassportCount = credentials.filter { credential in
-            let fieldsPresent = credential.compactMap { $0.split(separator: ":").map(String.init).first }
-            return requiredFields.allSatisfy { field in fieldsPresent.contains(field) }
-        }.count
+        let validPassports = passports.filter { passport in
+            requiredFields.allSatisfy { requiredField in
+                passport.keys.contains(requiredField)
+            }
+        }
 
-        printResult(dayPart: 1, message: "Number of valid passports: \(validPassportCount)")
+        printResult(dayPart: 1, message: "Number of valid passports: \(validPassports.count)")
     }
 
-    static func readCredentials(from lines: [String]) -> [[String]] {
+    static func readPassports(from lines: [String]) -> [Passport] {
         var credentials = [Int: [String]]()
         var emptyLinesFound = 0
 
@@ -40,8 +43,17 @@ struct Day4: Day {
             credentials[emptyLinesFound, default: []].append(line)
         }
 
-        return credentials.flatMap { _, lines -> [String] in
-            lines.joined(separator: " ").split(separator: " ").map(String.init)
+        return credentials.flatMap { _, lines -> Passport in
+            lines
+                .joined(separator: " ")
+                .split(separator: " ")
+                .reduce(into: [String: String]()) {
+                    let field = $1.split(separator: ":")
+
+                    if let key = field.first, let value = field.last {
+                        $0[String(key)] = String(value)
+                    }
+                }
         }
     }
 }
