@@ -37,8 +37,8 @@ extension Day {
         try? Input.get("\(Self.self).txt")
     }
 
-    static func splitInput(_ input: String, separator: Character = "\n") -> [String] {
-        input.split(separator: separator).map(String.init)
+    static func splitInput(_ input: String, separator: Character = "\n", omittingEmptySubsequences: Bool = true) -> [String] {
+        input.split(separator: separator, omittingEmptySubsequences: omittingEmptySubsequences).map(String.init)
     }
 
     static func printResult(result: Result = .success, dayPart: Int, message: String) {
