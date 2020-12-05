@@ -34,7 +34,7 @@ struct Day4: Day {
 
     static func part2(passports: [Passport]) {
         let validPassports = passports.filter { passport in
-            if !requiredFields.allSatisfy { passport.keys.contains($0) } {
+            if !requiredFields.allSatisfy({ passport.keys.contains($0) }) {
                 return false
             }
 
@@ -60,7 +60,7 @@ extension Day4 {
             guard let expirationYear = Int(value) else { return false }
             return (2020...2030).contains(expirationYear)
         case "pid":
-            return (Int(value) != nil) && value.count == 9
+            return value.matches(regex: "\\d{9}")
         case "ecl":
             return ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"].contains(value)
         case "hgt":
@@ -79,14 +79,9 @@ extension Day4 {
                 return false
             }
         case "hcl":
-            guard value.first == "#", value.count == 7 else { return false }
-            let allowedCharacters = "0123456789abcdef"
-            let hairColor = value.lowercased().dropFirst()
-            return hairColor.allSatisfy { allowedCharacters.contains($0) }
-        case "cid":
-            return true
+            return value.matches(regex: "#[a-zA-Z0-9]{6}")
         default:
-            return false
+            return true
         }
     }
 }
@@ -107,7 +102,7 @@ extension Day4 {
             credentials[emptyLinesFound, default: []].append(line)
         }
 
-        return credentials.flatMap { _, lines -> Passport in
+        return credentials.compactMap { _, lines -> Passport in
             lines
                 .joined(separator: " ")
                 .split(separator: " ")
