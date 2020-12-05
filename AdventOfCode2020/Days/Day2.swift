@@ -7,7 +7,7 @@ struct Day2: Day {
         part2(lines: lines)
     }
 
-    static func part1(lines: [String]) {
+    private static func part1(lines: [String]) {
         let validPasswords = lines.filter {
             let components = $0.split(whereSeparator: { [" ", "-", ":"].contains($0) })
 
@@ -30,7 +30,7 @@ struct Day2: Day {
         printResult(dayPart: 1, message: "Passwords matching criteria: \(validPasswords.count)")
     }
 
-    static func part2(lines: [String]) {
+    private static func part2(lines: [String]) {
         let validPasswords = lines.filter {
             let components = $0.split(whereSeparator: { [" ", "-", ":"].contains($0) })
 

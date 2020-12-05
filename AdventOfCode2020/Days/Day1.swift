@@ -1,13 +1,13 @@
 import Foundation
 
-class Day1: Day {
+struct Day1: Day {
     static func run(input: String) {
         let numbers = splitInput(input).compactMap(Int.init)
         part1(numbers: numbers)
         part2(numbers: numbers)
     }
 
-    static func part1(numbers: [Int]) {
+    private static func part1(numbers: [Int]) {
         let magicNumber = 2020
         for x in numbers {
             for y in numbers {
@@ -20,7 +20,7 @@ class Day1: Day {
         }
     }
 
-    static func part2(numbers: [Int]) {
+    private static func part2(numbers: [Int]) {
         let magicNumber = 2020
         for x in numbers {
             for y in numbers {

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Seat {
+private struct Seat {
     let row: Int
     let column: Int
     var seatId: Int { row * 8 + column }
@@ -13,12 +13,12 @@ struct Day5: Day {
         part2(seats: seats)
     }
 
-    static func part1(seats: [Seat]) {
+    private static func part1(seats: [Seat]) {
         let highestId = seats.map(\.seatId).max()
         printResult(dayPart: 1, message: "Highest seat ID: \(highestId!)")
     }
 
-    static func part2(seats: [Seat]) {
+    private static func part2(seats: [Seat]) {
         let takenSeatIds = seats.map(\.seatId).sorted()
 
         guard
@@ -37,7 +37,7 @@ struct Day5: Day {
 // MARK: - Parsing
 
 extension Day5 {
-    static func parseSeat(from line: String) -> Seat {
+    private static func parseSeat(from line: String) -> Seat {
         var rowHigh = 127
         var rowLow = 0
         var colHigh = 7

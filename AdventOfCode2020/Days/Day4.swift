@@ -1,6 +1,6 @@
 import Foundation
 
-typealias Passport = [String: String]
+private typealias Passport = [String: String]
 
 struct Day4: Day {
     static let requiredFields = [
@@ -21,7 +21,7 @@ struct Day4: Day {
         part2(passports: passports)
     }
 
-    static func part1(passports: [Passport]) {
+    private static func part1(passports: [Passport]) {
 
         let validPassports = passports.filter { passport in
             requiredFields.allSatisfy { requiredField in
@@ -32,7 +32,7 @@ struct Day4: Day {
         printResult(dayPart: 1, message: "Number of valid passports: \(validPassports.count)")
     }
 
-    static func part2(passports: [Passport]) {
+    private static func part2(passports: [Passport]) {
         let validPassports = passports.filter { passport in
             if !requiredFields.allSatisfy({ passport.keys.contains($0) }) {
                 return false
@@ -48,7 +48,7 @@ struct Day4: Day {
 // MARK: - Validation
 
 extension Day4 {
-    static func isValid(key: String, value: String) -> Bool {
+    private static func isValid(key: String, value: String) -> Bool {
         switch key {
         case "byr":
             guard let birthYear = Int(value) else { return false }
@@ -89,7 +89,7 @@ extension Day4 {
 // MARK: - Parsing input
 
 extension Day4 {
-    static func readPassports(from lines: [String]) -> [Passport] {
+    private static func readPassports(from lines: [String]) -> [Passport] {
         var credentials = [Int: [String]]()
         var emptyLinesFound = 0
 

@@ -21,16 +21,14 @@ struct Day3: Day {
         var treesInSlopes = [Int]()
 
         for slope in slopes {
-            var yPos = 0
             var xPos = 0
             var treesCounted = 0
-            repeat {
+            for yPos in stride(from: 0, through: lines.count, by: slope.y) {
                 if lines[yPos][xPos % (lineLength)] == "#" {
                     treesCounted += 1
                 }
                 xPos += slope.x
-                yPos += slope.y
-            } while yPos < lines.count
+            }
             treesInSlopes.append(treesCounted)
         }
 
