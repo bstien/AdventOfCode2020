@@ -8,23 +8,23 @@ struct Seat {
 
 struct Day5: Day {
     static func run(input: String) {
-        let lines = splitInput(input)
-        part1(lines: lines)
-        part2(lines: lines)
+        let seats = splitInput(input).map(parseSeat)
+        part1(seats: seats)
+        part2(seats: seats)
     }
 
-    static func part1(lines: [String]) {
-        let highestId = lines.map(parseSeat).map(\.seatId).max()
+    static func part1(seats: [Seat]) {
+        let highestId = seats.map(\.seatId).max()
         printResult(dayPart: 1, message: "Highest seat ID: \(highestId!)")
     }
 
-    static func part2(lines: [String]) {
-        let takenSeats = lines.map(parseSeat).map(\.seatId).sorted()
+    static func part2(seats: [Seat]) {
+        let takenSeatIds = seats.map(\.seatId).sorted()
 
         guard
-            let minId = takenSeats.first,
-            let maxId = takenSeats.last,
-            let mySeat = (minId...maxId).filter({ !takenSeats.contains($0) }).first
+            let minId = takenSeatIds.first,
+            let maxId = takenSeatIds.last,
+            let mySeat = (minId...maxId).filter({ !takenSeatIds.contains($0) }).first
         else {
             printResult(result: .fail, dayPart: 2, message: "Could not find my seath ☹️")
             return
