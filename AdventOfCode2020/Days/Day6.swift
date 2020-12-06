@@ -1,5 +1,6 @@
 import Foundation
 
+private typealias GroupAnswer = [[Character]]
 struct Day6: Day {
     static func run(input: String) {
         let groupAnswers = readAnswers(from: input)
@@ -7,30 +8,29 @@ struct Day6: Day {
         part2(answers: groupAnswers)
     }
 
-    private static func part1(answers: [[String]]) {
-        let uniqueCharacters = answers.map { $0.flatMap(Array.init) }.map(Set.init)
-        let numberOfAnswers = uniqueCharacters.reduce(0, { $0 + $1.count })
-        printResult(dayPart: 1, message: "Sum of answer count: \(numberOfAnswers)")
+    private static func part1(answers: [GroupAnswer]) {
+        let uniqueAnswers = answers.map { $0.flatMap { $0 } }.map(Set.init)
+        let numberOfAnswers = uniqueAnswers.reduce(0, { $0 + $1.count })
+        printResult(dayPart: 1, message: "Number of questions anyone in the group answered yes to: \(numberOfAnswers)")
     }
 
-    private static func part2(answers: [[String]]) {
+    private static func part2(answers: [GroupAnswer]) {
         let questionsAllAnsweredYesTo = answers.reduce(0, { result, groupAnswers in
             guard let firstPerson = groupAnswers.first else { return result }
 
-            var numberOfYes = 0
-            for answer in Array(firstPerson) {
-                if groupAnswers.allSatisfy({ $0.contains(answer) }) {
-                    numberOfYes += 1
-                }
-            }
-
-            return result + numberOfYes
+            return result + firstPerson.reduce(0, { result, answer in
+                result + (groupAnswers.allSatisfy({ $0.contains(answer) }) ? 1 : 0)
+            })
         })
 
         printResult(dayPart: 2, message: "Number of questions everyone in the group answered yes to: \(questionsAllAnsweredYesTo)")
     }
+}
 
-    private static func readAnswers(from input: String) -> [[String]] {
+// MARK: - Parsing
+
+extension Day6 {
+    private static func readAnswers(from input: String) -> [GroupAnswer] {
         var answers = [[String]]()
         var groupsFound = 0
 
@@ -47,6 +47,6 @@ struct Day6: Day {
             }
         }
 
-        return answers
+        return answers.map { $0.map(Array.init) }
     }
 }
