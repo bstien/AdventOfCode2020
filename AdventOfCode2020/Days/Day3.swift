@@ -23,7 +23,7 @@ struct Day3: Day {
         for slope in slopes {
             var xPos = 0
             var treesCounted = 0
-            for yPos in stride(from: 0, through: lines.count, by: slope.y) {
+            for yPos in stride(from: 0, through: lines.count - 1, by: slope.y) {
                 if lines[yPos][xPos % (lineLength)] == "#" {
                     treesCounted += 1
                 }
