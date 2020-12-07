@@ -33,20 +33,10 @@ struct Day7: Day {
     }
 
     private static func part2(rules: BagRules) {
-        var checkedBags = [String: Int]()
-
         func findNumberOfChildren(for bagName: String) -> Int {
-            if let existingResult = checkedBags[bagName] { return existingResult }
-
-            var bagCount = 1
-            if let children = rules[bagName], !children.isEmpty {
-                bagCount = children.map { $0.qty * findNumberOfChildren(for: $0.name) }.reduce(1, +)
-            }
-
-            checkedBags[bagName] = bagCount
-            return bagCount
+            let children = rules[bagName] ?? []
+            return children.map { $0.qty * findNumberOfChildren(for: $0.name) }.reduce(1, +)
         }
-
 
         let bagCount = findNumberOfChildren(for: "shiny gold") - 1
         printResult(dayPart: 2, message: "Number of bags contained in shiny gold: \(bagCount)")
