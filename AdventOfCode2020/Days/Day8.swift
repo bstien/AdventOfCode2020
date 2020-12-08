@@ -1,20 +1,5 @@
 import Foundation
 
-private enum Instruction {
-    case jmp(Int)
-    case acc(Int)
-    case nop
-
-    init?(name: String, value: Int) {
-        switch name {
-        case "jmp": self = .jmp(value)
-        case "acc": self = .acc(value)
-        case "nop": self = .nop
-        default: return nil
-        }
-    }
-}
-
 struct Day8: Day {
     static func run(input: String) {
         let instructions = parseInstructions(from: input)
@@ -30,12 +15,12 @@ struct Day8: Day {
             visitedInstructions.insert(programCounter)
             let instruction = instructions[programCounter]
 
-            switch instruction {
-            case .acc(let value):
-                accumulator += value
+            switch instruction.operation {
+            case .acc:
+                accumulator += instruction.value
                 programCounter += 1
-            case .jmp(let value):
-                programCounter += value
+            case .jmp:
+                programCounter += instruction.value
             case .nop:
                 programCounter += 1
             }
@@ -52,8 +37,19 @@ extension Day8 {
         splitInput(input).reduce(into: [Instruction]()) { result, line in
             let split = line.split(separator: " ").map(String.init)
 
-            guard let intValue = Int(split[1]), let instruction = Instruction(name: split[0], value: intValue) else { return }
-            result.append(instruction)
+            guard let intValue = Int(split[1]), let operation = Operation(rawValue: split[0]) else { return }
+            result.append(Instruction(operation: operation, value: intValue))
         }
     }
+}
+
+// MARK: - Private types
+
+private enum Operation: String {
+    case jmp, acc, nop
+}
+
+private struct Instruction {
+    let operation: Operation
+    let value: Int
 }
