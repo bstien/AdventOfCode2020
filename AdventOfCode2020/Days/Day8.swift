@@ -4,9 +4,57 @@ struct Day8: Day {
     static func run(input: String) {
         let instructions = parseInstructions(from: input)
         part1(instructions: instructions)
+        part2(instructions: instructions)
     }
 
     private static func part1(instructions: [Instruction]) {
+        let result = runProgram(instructions: instructions)
+
+        if result.infiniteLoop {
+            printResult(dayPart: 1, message: "Value of acc when trying to run an instruction a second time: \(result.acc)")
+        } else {
+            printResult(result: .fail, dayPart: 1, message: "Program terminated without problems")
+        }
+    }
+
+    private static func part2(instructions: [Instruction]) {
+        var changedInstructions = Set<Int>()
+        var result: (acc: Int, infiniteLoop: Bool)?
+
+        repeat {
+            var instructionsToTest = instructions
+            guard let jmpOrNop = instructions.enumerated().first(where: { !changedInstructions.contains($0.offset) && $0.element.operation != .acc })
+            else { break }
+
+            let offset = jmpOrNop.offset
+            let operation = jmpOrNop.element.operation
+            let value = jmpOrNop.element.value
+            instructionsToTest[offset] = operation == .jmp ? Instruction(operation: .nop, value: value) : Instruction(operation: .jmp, value: value)
+
+            changedInstructions.insert(offset)
+
+            result = runProgram(instructions: instructionsToTest)
+
+            if let result = result, !result.infiniteLoop { break }
+        } while true
+
+        guard let finalResult = result else {
+            printResult(result: .fail, dayPart: 2, message: "Did not get a result :(")
+            return
+        }
+
+        if finalResult.infiniteLoop {
+            printResult(result: .fail, dayPart: 2, message: "Got stuck in an infinite loop...")
+        } else {
+            printResult(dayPart: 2, message: "Value in accumulator after changing a single instruction: \(finalResult.acc)")
+        }
+    }
+}
+
+// MARK: - Running the program
+
+extension Day8 {
+    private static func runProgram(instructions: [Instruction]) -> (acc: Int, infiniteLoop: Bool) {
         var visitedInstructions = Set<Int>()
         var programCounter = 0
         var accumulator = 0
@@ -24,9 +72,9 @@ struct Day8: Day {
             case .nop:
                 programCounter += 1
             }
-        } while !visitedInstructions.contains(programCounter)
+        } while instructions.indices.contains(programCounter) && !visitedInstructions.contains(programCounter)
 
-        printResult(dayPart: 1, message: "Value of acc when trying to run an instruction a second time: \(accumulator)")
+        return (acc: accumulator, infiniteLoop: visitedInstructions.contains(programCounter))
     }
 }
 
