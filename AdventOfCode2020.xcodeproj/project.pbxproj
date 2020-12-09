@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		68AE050948DE17B3DF9BAAA5 /* Day9.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AE08701A9E55BD16AF859D /* Day9.swift */; };
 		79AF59F12576A14A0036E898 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AF59F02576A14A0036E898 /* main.swift */; };
 		8D6800CFA36EEC95A09BCB5F /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D680EA6947D502F24BD799F /* String+Extensions.swift */; };
 		8D6801A07A8BE12DDD5866D1 /* Day3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D680D6578E73140F6FC4F4F /* Day3.swift */; };
@@ -34,6 +35,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		68AE0143556962F84E75F4E8 /* Day9.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day9.txt; sourceTree = "<group>"; };
+		68AE08701A9E55BD16AF859D /* Day9.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day9.swift; sourceTree = "<group>"; };
 		79AF59ED2576A14A0036E898 /* AdventOfCode2020 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AdventOfCode2020; sourceTree = BUILT_PRODUCTS_DIR; };
 		79AF59F02576A14A0036E898 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8D68001515FE3B71EA3C001D /* Day8.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day8.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 				8D680406D26C9C8D892C15AD /* Day6.txt */,
 				8D68079E69F24E07E82F6B5E /* Day7.txt */,
 				8D6805C2605DAA33E20787DE /* Day8.txt */,
+				68AE0143556962F84E75F4E8 /* Day9.txt */,
 			);
 			path = Inputs;
 			sourceTree = "<group>";
@@ -131,6 +135,7 @@
 				8D680716FB51CE46922CF850 /* Day6.swift */,
 				8D6809711357C93F564900F1 /* Day7.swift */,
 				8D68001515FE3B71EA3C001D /* Day8.swift */,
+				68AE08701A9E55BD16AF859D /* Day9.swift */,
 			);
 			path = Days;
 			sourceTree = "<group>";
@@ -204,6 +209,7 @@
 				8D6808AA74A2E4FC03B67D92 /* Day6.swift in Sources */,
 				8D680C50CC043C7CDF411A1E /* Day7.swift in Sources */,
 				8D680E5F33347C20C65EB5E5 /* Day8.swift in Sources */,
+				68AE050948DE17B3DF9BAAA5 /* Day9.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
