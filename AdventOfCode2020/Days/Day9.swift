@@ -15,19 +15,18 @@ struct Day9: Day {
         var invalidNumbers = [Int]()
         var index = 0
         repeat {
-            let preamble = Array(numbers[index..<(index + preambleLength)])
+            defer { index += 1 }
+            let preamble = Set(numbers[index..<(index + preambleLength)])
             let number = numbers[index + preambleLength]
 
-            let isInvalidNumber = !preamble.map { pre -> Bool in
-                let diff = number - pre
-                return diff != pre && preamble.contains(where: { $0 == diff})
-            }.contains(true)
+            let isInvalidNumber = preamble.map {
+                let diff = number - $0
+                return diff != $0 && preamble.contains(diff)
+            }.allSatisfy({ !$0 })
 
             if isInvalidNumber {
                 invalidNumbers.append(number)
             }
-
-            index += 1
         } while numbers.count > index + preambleLength
 
         guard let firstInvalidNumber = invalidNumbers.first else {
@@ -55,19 +54,18 @@ private extension Day9 {
     static func contiguousNumbers(from numbers: [Int], addingTo value: Int) -> [Int] {
         var start = 0
         var end = 1
-        var hasFoundList = false
+
         repeat {
             let sum = Array(numbers[start...end]).reduce(0, +)
+            if sum == value { break }
 
-            if sum == value {
-                hasFoundList = true
-            } else if sum < value {
+            else if sum < value {
                 end += 1
             } else {
                 start += 1
                 end = start + 1
             }
-        } while !hasFoundList
+        } while true
 
         return Array(numbers[start...end])
     }
