@@ -3,14 +3,14 @@ import Foundation
 struct Day10: Day {
     static func run(input: String) {
         var adapters = splitInput(input).compactMap(Int.init).sorted()
-        adapters = adapters + [adapters.max()! + 3]
+        adapters = [0] + adapters + [adapters.max()! + 3]
 
         part1(adapters: adapters)
         part2(adapters: adapters)
     }
 
     static func part1(adapters: [Int]) {
-        var previousAdapter = 0
+        var previousAdapter = adapters.first!
         var joltDifference = [Int: Int]()
 
         for adapter in adapters {
@@ -24,18 +24,39 @@ struct Day10: Day {
     }
 
     static func part2(adapters: [Int]) {
-        func uniqueCombinations(currentAdapter: Int, adapters: [Int]) -> Int {
-            if adapters.count == 1 { return 1 }
+        func traverse(fromIndex: Int) -> Int {
+            let adapter = adapters[fromIndex]
+            var index = fromIndex + 1
 
-            let potentialAdapters = adapters.filter { (1...3).contains($0 - currentAdapter) }
-            if potentialAdapters.isEmpty { return 0 }
+            if index == adapters.count { return 1 }
 
-            return potentialAdapters.map { adapter in
-                uniqueCombinations(currentAdapter: adapter, adapters: adapters.filter { $0 > adapter })
-            }.reduce(0, +)
+            var count = 0
+            repeat {
+                count += traverse(fromIndex: index)
+                index += 1
+            } while index < adapters.count && adapters[index] - adapter <= 3
+
+            return count
         }
 
-        let result = uniqueCombinations(currentAdapter: 0, adapters: adapters)
+        let adapterCount = adapters.count
+        var sums = Array(repeating: 0, count: adapterCount)
+
+        sums[adapterCount - 1] = traverse(fromIndex: adapterCount - 1)
+        sums[adapterCount - 2] = traverse(fromIndex: adapterCount - 2)
+        sums[adapterCount - 3] = traverse(fromIndex: adapterCount - 3)
+
+        var startIndex = adapterCount - 4
+        repeat {
+            defer { startIndex -= 1 }
+            var currentIndex = startIndex + 1
+            repeat {
+                sums[startIndex] += sums[currentIndex]
+                currentIndex += 1
+            } while adapters[currentIndex] - adapters[startIndex] <= 3
+        } while startIndex >= 0
+
+        let result = sums[0]
         printResult(dayPart: 2, message: "Number of unique adapter combinations: \(result)")
     }
 }
