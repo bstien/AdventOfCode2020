@@ -3,7 +3,8 @@ import Foundation
 struct Day11: Day {
     static func run(input: String) {
         let floorMap = splitInput(input).map { $0.map(Int.floorTile(from:)) }
-        part1(floorMap: floorMap)
+//        part1(floorMap: floorMap)
+        part2(floorMap: floorMap)
     }
 
     private static func part1(floorMap: FloorMap) {
@@ -18,7 +19,7 @@ struct Day11: Day {
             hasDoneChanges = false
             (0..<height).forEach({ y in
                 (0..<width).forEach({ x in
-                    if shouldChange(seat: (y: y, x: x), floorMap: floorMap, height: height, width: width) {
+                    if shouldChangePart1(seat: (y: y, x: x), floorMap: floorMap, height: height, width: width) {
                         changes[y][x] = -floorMap[y][x]
                         hasDoneChanges = true
                     }
@@ -35,7 +36,7 @@ struct Day11: Day {
         printResult(dayPart: 1, message: "Number of taken seats after iterating: \(takenSeats)")
     }
 
-    private static func shouldChange(seat: Seat, floorMap: FloorMap, height: Int, width: Int) -> Bool {
+    private static func shouldChangePart1(seat: Seat, floorMap: FloorMap, height: Int, width: Int) -> Bool {
         let seatValue = floorMap[seat.y][seat.x]
 
         if seatValue == 0 { return false }
@@ -61,6 +62,75 @@ struct Day11: Day {
         }
         return adjacentSeatsTaken == 0
     }
+
+    private static func part2(floorMap: FloorMap) {
+        let height = floorMap.count
+        let width = floorMap.first!.count
+
+        var floorMap = floorMap
+        var hasDoneChanges = false
+
+        repeat {
+            var changes = floorMap
+            hasDoneChanges = false
+            (0..<height).forEach({ y in
+                (0..<width).forEach({ x in
+                    if shouldChangePart2(seat: (y: y, x: x), floorMap: floorMap, height: height, width: width) {
+                        changes[y][x] = -floorMap[y][x]
+                        hasDoneChanges = true
+                    }
+                })
+            })
+
+            floorMap = changes
+        } while hasDoneChanges
+
+        let takenSeats = floorMap.map { row in
+            row.filter { $0 == 1 }.reduce(0, +)
+        }.reduce(0, +)
+
+        printResult(dayPart: 2, message: "Number of taken seats after iterating: \(takenSeats)")
+    }
+
+
+    private static func shouldChangePart2(seat: Seat, floorMap: FloorMap, height: Int, width: Int) -> Bool {
+        let seatValue = floorMap[seat.y][seat.x]
+
+        if seatValue == 0 { return false }
+        var adjacentSeatsTaken = 0
+
+        func checkSeat(seat: Seat) -> Int {
+            if seat.y < 0 || seat.x < 0 { return 0 }
+            if seat.y >= height || seat.x >= width { return 0 }
+            return floorMap[seat.y][seat.x] == 1 ? 1 : 0
+        }
+
+        let largestSide = max(width, height)
+        var offset = 1
+        repeat {
+            adjacentSeatsTaken += [
+                // Horizontal
+                checkSeat(seat: Seat(y: seat.y, x: seat.x + offset)),
+                checkSeat(seat: Seat(y: seat.y, x: seat.x - offset)),
+
+                // Vertical
+                checkSeat(seat: Seat(y: seat.y + offset, x: seat.x)),
+                checkSeat(seat: Seat(y: seat.y + offset, x: seat.x)),
+
+                // Horizontals
+                checkSeat(seat: Seat(y: seat.y + offset, x: seat.x + offset)),
+                checkSeat(seat: Seat(y: seat.y - offset, x: seat.x - offset)),
+                checkSeat(seat: Seat(y: seat.y + offset, x: seat.x - offset)),
+                checkSeat(seat: Seat(y: seat.y - offset, x: seat.x + offset)),
+            ].reduce(0, +)
+            offset += 1
+        } while offset < largestSide
+
+        if seatValue == 1 {
+            return adjacentSeatsTaken >= 5
+        }
+        return adjacentSeatsTaken == 0
+    }
 }
 
 // MARK: - Types
@@ -75,6 +145,27 @@ extension Int {
         case "L": return -1
         case "#": return 1
         default: fatalError("Could not parse value: '\(value)'")
+        }
+    }
+}
+
+// MARK: - Debug
+
+extension Day11 {
+    private static func printFloorMap(_ floorMap: FloorMap) {
+        let toPrint = floorMap.map { String($0.map { $0.toFloorTile }) }.joined(separator: "\n")
+        print(toPrint)
+        print("------\n\n")
+    }
+}
+
+extension Int {
+    var toFloorTile: Character {
+        switch self {
+        case 0: return "."
+        case -1: return "L"
+        case 1: return "#"
+        default: fatalError("Could not return tile from self: '\(self)'")
         }
     }
 }
